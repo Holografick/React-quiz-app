@@ -6,36 +6,88 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var App = function (_React$Component) {
-    _inherits(App, _React$Component);
+var Quiz = function (_React$Component) {
+    _inherits(Quiz, _React$Component);
+
+    function Quiz(props) {
+        _classCallCheck(this, Quiz);
+
+        return _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props));
+    }
+
+    _createClass(Quiz, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                'div',
+                null,
+                'Quiz ',
+                this.props.quiz
+            );
+        }
+    }]);
+
+    return Quiz;
+}(React.Component);
+
+var App = function (_React$Component2) {
+    _inherits(App, _React$Component2);
 
     function App(props) {
         _classCallCheck(this, App);
 
-        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this.state = {
+        _this2.selectQuiz = function (selected) {
+            console.log(selected);
+            _this2.setState({
+                status: 'quizzing',
+                quiz: selected
+            });
+        };
+
+        _this2.state = {
             status: 'browsing',
             quiz: null
         };
-        return _this;
+        return _this2;
     }
 
     _createClass(App, [{
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             if (this.state.status === 'browsing') {
                 return React.createElement(
                     'div',
                     null,
-                    'Select quiz you wish to take'
+                    React.createElement(
+                        'h1',
+                        null,
+                        'Select quiz you wish to take'
+                    ),
+                    React.createElement(
+                        'ul',
+                        null,
+                        React.createElement(
+                            'li',
+                            { onClick: function onClick(e) {
+                                    return _this3.selectQuiz(1);
+                                } },
+                            'Quiz 1'
+                        ),
+                        React.createElement(
+                            'li',
+                            { onClick: function onClick(e) {
+                                    return _this3.selectQuiz(2);
+                                } },
+                            'Quiz 2'
+                        )
+                    )
                 );
             } else if (this.state.status === 'quizzing') {
-                return React.createElement(
-                    'div',
-                    null,
-                    'Quizzing'
-                );
+                return React.createElement(Quiz, { quiz: this.state.quiz });
             }
         }
     }]);
