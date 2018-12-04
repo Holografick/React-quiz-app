@@ -30,6 +30,11 @@ var Quiz = function (_React$Component) {
                 'div',
                 null,
                 React.createElement(
+                    'button',
+                    { onClick: this.props.backToMenu },
+                    'Back to Menu'
+                ),
+                React.createElement(
                     'h3',
                     null,
                     this.props.quiz.name
@@ -58,6 +63,12 @@ var App = function (_React$Component2) {
             _this2.setState({
                 status: 'quizzing',
                 quiz: selected
+            });
+        };
+
+        _this2.backToMenu = function () {
+            _this2.setState({
+                status: 'browsing'
             });
         };
 
@@ -101,7 +112,7 @@ var App = function (_React$Component2) {
                     )
                 );
             } else if (this.state.status === 'quizzing') {
-                return React.createElement(Quiz, { quiz: this.state.quiz });
+                return React.createElement(Quiz, { quiz: this.state.quiz, backToMenu: this.backToMenu });
             }
         }
     }]);

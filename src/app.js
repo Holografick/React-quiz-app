@@ -18,6 +18,7 @@ class Quiz extends React.Component{
     render(){
         return (
             <div>
+                <button onClick={this.props.backToMenu}>Back to Menu</button>
                 <h3>{this.props.quiz.name}</h3>
                 <span>{this.props.quiz.description}</span>
             </div>
@@ -41,6 +42,12 @@ class App extends React.Component{
         })
     }
     
+    backToMenu = () =>{
+        this.setState({
+            status: 'browsing'
+        })
+    }
+    
     quizList = () =>{
         return this.props.quizzes.map( (q) =>{
             return <li key={q.name} onClick={(e) => this.selectQuiz(q)}>{q.name}</li>    
@@ -61,7 +68,7 @@ class App extends React.Component{
             )
         } else if(this.state.status === 'quizzing'){
             return (
-                <Quiz quiz={this.state.quiz} />
+                <Quiz quiz={this.state.quiz} backToMenu={this.backToMenu}/>
             )
         }
     }
