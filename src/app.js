@@ -1,55 +1,28 @@
-const quizzes = [
-    {
-        name: 'Some Quiz',
-        description: 'This is some quiz',
-        questions: [
-            {
-                question: 'How is life?',
-                options: [
-                    'Good',
-                    'Bad',
-                    'Meh'
-                ],
-                answer: 2,
-                explanation: 'Life can not be good or bad, it can only be Meh'
-            }
-        ]
-    },
-    {
-        name: 'Other Quiz',
-        description: 'This is the other quiz',
-        questions: [
-            {
-                question: 'Are you stupid?',
-                options: [
-                    'Yes',
-                    'No',
-                    'I R Baboon'
-                ],
-                answer: 0,
-                explanation: 'You are actually stupid'
-            }
-        ]
-    },
-    
-]
-
 class Question extends React.Component{
     constructor(props){
-        super(props)
+        super(props);
+        this.state = {
+            selectedAnswer : 0
+        }
     }
     
     renderOptions = () =>{
         return this.props.question.options.map( (o, i) =>{
-            return <option value={i}>{o}</option>
+            return <option value={i} key={i}>{o}</option>
         })
+    }
+    
+    changeAnswer = (e) =>{
+        this.setState({
+            selectedAnswer: e.target.value
+        });
     }
     
     render(){
         return (
             <div>
                 <h3>{this.props.question.question}</h3>
-                <select>
+                <select onChange={this.changeAnswer} value={this.state.selectedAnswer}>
                     {this.renderOptions()}
                 </select>
             </div>
@@ -57,18 +30,36 @@ class Question extends React.Component{
     }
 }
 
+
 class Quiz extends React.Component{
     constructor(props){
-        super(props)
+        super(props),
+        this.state = {
+            phase: 'starting',
+            currentQuestion: 0
+        }
+    }
+    
+    getQuizBody(){
+        if(this.state.phase === 'starting'){
+            return (
+                <div>
+                    <span>{this.props.quiz.description}</span>
+                    <br></br>
+                    <button onClick={()=>this.setState({phase:'quizzing'})}>Start</button>
+                </div>
+            )
+        } else if(this.state.phase == 'quizzing'){
+            return <Question question={this.props.quiz.questions[this.state.currentQuestion]} />
+        }
     }
     
     render(){
         return (
             <div>
                 <button onClick={this.props.backToMenu}>Back to Menu</button>
-                <h3>{this.props.quiz.name}</h3>
-                <span>{this.props.quiz.description}</span>
-                <Question question={this.props.quiz.questions[0]} />
+                <h2>{this.props.quiz.name}</h2>
+                    {this.getQuizBody()}
             </div>
         )
     }

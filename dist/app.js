@@ -6,26 +6,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var quizzes = [{
-    name: 'Some Quiz',
-    description: 'This is some quiz',
-    questions: [{
-        question: 'How is life?',
-        options: ['Good', 'Bad', 'Meh'],
-        answer: 2,
-        explanation: 'Life can not be good or bad, it can only be Meh'
-    }]
-}, {
-    name: 'Other Quiz',
-    description: 'This is the other quiz',
-    questions: [{
-        question: 'Are you stupid?',
-        options: ['Yes', 'No', 'I R Baboon'],
-        answer: 0,
-        explanation: 'You are actually stupid'
-    }]
-}];
-
 var Question = function (_React$Component) {
     _inherits(Question, _React$Component);
 
@@ -38,12 +18,21 @@ var Question = function (_React$Component) {
             return _this.props.question.options.map(function (o, i) {
                 return React.createElement(
                     'option',
-                    { value: i },
+                    { value: i, key: i },
                     o
                 );
             });
         };
 
+        _this.changeAnswer = function (e) {
+            _this.setState({
+                selectedAnswer: e.target.value
+            });
+        };
+
+        _this.state = {
+            selectedAnswer: 0
+        };
         return _this;
     }
 
@@ -60,7 +49,7 @@ var Question = function (_React$Component) {
                 ),
                 React.createElement(
                     'select',
-                    null,
+                    { onChange: this.changeAnswer, value: this.state.selectedAnswer },
                     this.renderOptions()
                 )
             );
@@ -74,12 +63,45 @@ var Quiz = function (_React$Component2) {
     _inherits(Quiz, _React$Component2);
 
     function Quiz(props) {
+        var _this2;
+
         _classCallCheck(this, Quiz);
 
-        return _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props));
+        (_this2 = _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props)), _this2), _this2.state = {
+            phase: 'starting',
+            currentQuestion: 0
+        };
+        return _this2;
     }
 
     _createClass(Quiz, [{
+        key: 'getQuizBody',
+        value: function getQuizBody() {
+            var _this3 = this;
+
+            if (this.state.phase === 'starting') {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'span',
+                        null,
+                        this.props.quiz.description
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'button',
+                        { onClick: function onClick() {
+                                return _this3.setState({ phase: 'quizzing' });
+                            } },
+                        'Start'
+                    )
+                );
+            } else if (this.state.phase == 'quizzing') {
+                return React.createElement(Question, { question: this.props.quiz.questions[this.state.currentQuestion] });
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
@@ -91,16 +113,11 @@ var Quiz = function (_React$Component2) {
                     'Back to Menu'
                 ),
                 React.createElement(
-                    'h3',
+                    'h2',
                     null,
                     this.props.quiz.name
                 ),
-                React.createElement(
-                    'span',
-                    null,
-                    this.props.quiz.description
-                ),
-                React.createElement(Question, { question: this.props.quiz.questions[0] })
+                this.getQuizBody()
             );
         }
     }]);
@@ -114,38 +131,38 @@ var App = function (_React$Component3) {
     function App(props) {
         _classCallCheck(this, App);
 
-        var _this3 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+        var _this4 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this3.selectQuiz = function (selected) {
-            _this3.setState({
+        _this4.selectQuiz = function (selected) {
+            _this4.setState({
                 status: 'quizzing',
                 quiz: selected
             });
         };
 
-        _this3.backToMenu = function () {
-            _this3.setState({
+        _this4.backToMenu = function () {
+            _this4.setState({
                 status: 'browsing'
             });
         };
 
-        _this3.quizList = function () {
-            return _this3.props.quizzes.map(function (q) {
+        _this4.quizList = function () {
+            return _this4.props.quizzes.map(function (q) {
                 return React.createElement(
                     'li',
                     { key: q.name, onClick: function onClick(e) {
-                            return _this3.selectQuiz(q);
+                            return _this4.selectQuiz(q);
                         } },
                     q.name
                 );
             });
         };
 
-        _this3.state = {
+        _this4.state = {
             status: 'browsing',
             quiz: null
         };
-        return _this3;
+        return _this4;
     }
 
     _createClass(App, [{
