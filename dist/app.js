@@ -30,6 +30,12 @@ var Question = function (_React$Component) {
             });
         };
 
+        _this.checkAnswer = function (e) {
+            question = _this.props.question;
+            console.log(_this.state.selectedAnswer == question.answer);
+            console.log(question.explanation);
+        };
+
         _this.state = {
             selectedAnswer: 0
         };
@@ -51,6 +57,12 @@ var Question = function (_React$Component) {
                     'select',
                     { onChange: this.changeAnswer, value: this.state.selectedAnswer },
                     this.renderOptions()
+                ),
+                React.createElement('br', null),
+                React.createElement(
+                    'button',
+                    { onClick: this.checkAnswer },
+                    'Check'
                 )
             );
         }
@@ -63,11 +75,46 @@ var Quiz = function (_React$Component2) {
     _inherits(Quiz, _React$Component2);
 
     function Quiz(props) {
-        var _this2;
+        var _temp, _this2;
 
         _classCallCheck(this, Quiz);
 
-        (_this2 = _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props)), _this2), _this2.state = {
+        (_temp = (_this2 = _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props)), _this2), _this2.nextQuestion = function () {
+            _this2.setState(function (state, props) {
+                return {
+                    currentQuestion: state.currentQuestion + 1
+                };
+            });
+        }, _this2.getQuizBody = function () {
+            if (_this2.state.phase === 'starting') {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'span',
+                        null,
+                        _this2.props.quiz.description
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'button',
+                        { onClick: function onClick() {
+                                return _this2.setState({ phase: 'quizzing' });
+                            } },
+                        'Start'
+                    )
+                );
+            } else if (_this2.state.phase == 'quizzing') {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(Question, {
+                        question: _this2.props.quiz.questions[_this2.state.currentQuestion],
+                        nextQuestion: _this2.nextQuestion
+                    })
+                );
+            }
+        }, _temp), _this2.state = {
             phase: 'starting',
             currentQuestion: 0
         };
@@ -75,33 +122,6 @@ var Quiz = function (_React$Component2) {
     }
 
     _createClass(Quiz, [{
-        key: 'getQuizBody',
-        value: function getQuizBody() {
-            var _this3 = this;
-
-            if (this.state.phase === 'starting') {
-                return React.createElement(
-                    'div',
-                    null,
-                    React.createElement(
-                        'span',
-                        null,
-                        this.props.quiz.description
-                    ),
-                    React.createElement('br', null),
-                    React.createElement(
-                        'button',
-                        { onClick: function onClick() {
-                                return _this3.setState({ phase: 'quizzing' });
-                            } },
-                        'Start'
-                    )
-                );
-            } else if (this.state.phase == 'quizzing') {
-                return React.createElement(Question, { question: this.props.quiz.questions[this.state.currentQuestion] });
-            }
-        }
-    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
@@ -131,38 +151,38 @@ var App = function (_React$Component3) {
     function App(props) {
         _classCallCheck(this, App);
 
-        var _this4 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this4.selectQuiz = function (selected) {
-            _this4.setState({
+        _this3.selectQuiz = function (selected) {
+            _this3.setState({
                 status: 'quizzing',
                 quiz: selected
             });
         };
 
-        _this4.backToMenu = function () {
-            _this4.setState({
+        _this3.backToMenu = function () {
+            _this3.setState({
                 status: 'browsing'
             });
         };
 
-        _this4.quizList = function () {
-            return _this4.props.quizzes.map(function (q) {
+        _this3.quizList = function () {
+            return _this3.props.quizzes.map(function (q) {
                 return React.createElement(
                     'li',
                     { key: q.name, onClick: function onClick(e) {
-                            return _this4.selectQuiz(q);
+                            return _this3.selectQuiz(q);
                         } },
                     q.name
                 );
             });
         };
 
-        _this4.state = {
+        _this3.state = {
             status: 'browsing',
             quiz: null
         };
-        return _this4;
+        return _this3;
     }
 
     _createClass(App, [{

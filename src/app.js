@@ -18,6 +18,12 @@ class Question extends React.Component{
         });
     }
     
+    checkAnswer = (e) =>{
+        question = this.props.question;
+        console.log(this.state.selectedAnswer == question.answer);
+        console.log(question.explanation);
+    }
+    
     render(){
         return (
             <div>
@@ -25,6 +31,8 @@ class Question extends React.Component{
                 <select onChange={this.changeAnswer} value={this.state.selectedAnswer}>
                     {this.renderOptions()}
                 </select>
+                <br></br>
+                <button onClick={this.checkAnswer}>Check</button>
             </div>
         )
     }
@@ -40,7 +48,13 @@ class Quiz extends React.Component{
         }
     }
     
-    getQuizBody(){
+    nextQuestion = () =>{
+        this.setState((state, props) => ({
+            currentQuestion: state.currentQuestion + 1
+        }))
+    }
+    
+    getQuizBody = () =>{
         if(this.state.phase === 'starting'){
             return (
                 <div>
@@ -50,7 +64,14 @@ class Quiz extends React.Component{
                 </div>
             )
         } else if(this.state.phase == 'quizzing'){
-            return <Question question={this.props.quiz.questions[this.state.currentQuestion]} />
+            return (
+                <div>
+                    <Question 
+                        question={this.props.quiz.questions[this.state.currentQuestion]} 
+                        nextQuestion={this.nextQuestion}
+                    />
+                </div>
+            )
         }
     }
     
