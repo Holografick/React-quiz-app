@@ -32,11 +32,18 @@ var Question = function (_React$Component) {
 
         _this.checkAnswer = function (e) {
             question = _this.props.question;
-            _this.state.selectedAnswer == question.answer ? _this.setState({
-                status: 'correct'
-            }) : _this.setState({
-                status: 'inCorrect'
-            });
+            if (_this.state.selectedAnswer == question.answer) {
+                _this.setState({
+                    status: 'correct'
+                });
+                toAdd = 'right';
+            } else {
+                _this.setState({
+                    status: 'inCorrect'
+                });
+                toAdd = 'wrong';
+            }
+            _this.props.updateScore(toAdd);
         };
 
         _this.nextQuestion = function () {
@@ -126,14 +133,27 @@ var Quiz = function (_React$Component2) {
 
         _classCallCheck(this, Quiz);
 
-        (_temp = (_this2 = _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props)), _this2), _this2.nextQuestion = function () {
+        (_temp = (_this2 = _possibleConstructorReturn(this, (Quiz.__proto__ || Object.getPrototypeOf(Quiz)).call(this, props)), _this2), _this2.updateScore = function (toAdd) {
+            if (toAdd === 'right') {
+                right = _this2.state.right + 1;
+                wrong = _this2.state.wrong;
+            } else {
+                wrong = _this2.state.wrong + 1;
+                right = _this2.state.right;
+            }
+
+            _this2.setState({
+                right: right,
+                wrong: wrong
+            });
+        }, _this2.nextQuestion = function () {
             _this2.setState(function (state, props) {
                 return {
                     currentQuestion: state.currentQuestion + 1
                 };
             });
-            console.log(_this2.state.currentQuestion);
         }, _this2.getQuizBody = function () {
+            totalQuestions = _this2.props.quiz.questions.length;
             if (_this2.state.phase === 'starting') {
                 return React.createElement(
                     'div',
@@ -145,6 +165,13 @@ var Quiz = function (_React$Component2) {
                     ),
                     React.createElement('br', null),
                     React.createElement(
+                        'span',
+                        null,
+                        'Total Questions: ',
+                        totalQuestions
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
                         'button',
                         { onClick: function onClick() {
                                 return _this2.setState({ phase: 'quizzing' });
@@ -153,19 +180,45 @@ var Quiz = function (_React$Component2) {
                     )
                 );
             } else if (_this2.state.phase == 'quizzing') {
+                questionNumber = _this2.state.currentQuestion + 1;
                 return React.createElement(
                     'div',
                     null,
+                    React.createElement(
+                        'span',
+                        null,
+                        'Right: ',
+                        _this2.state.right,
+                        ' | Wrong: ',
+                        _this2.state.wrong
+                    ),
+                    React.createElement('br', null),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'span',
+                        null,
+                        React.createElement(
+                            'b',
+                            null,
+                            'Question: ',
+                            questionNumber,
+                            '/',
+                            totalQuestions
+                        )
+                    ),
                     React.createElement(Question, {
                         question: _this2.props.quiz.questions[_this2.state.currentQuestion],
                         nextQuestion: _this2.nextQuestion,
-                        status: 'unAnswered'
+                        status: 'unAnswered',
+                        updateScore: _this2.updateScore
                     })
                 );
             }
         }, _temp), _this2.state = {
             phase: 'starting',
-            currentQuestion: 0
+            currentQuestion: 0,
+            right: 0,
+            wrong: 0
         };
         return _this2;
     }

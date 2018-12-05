@@ -21,13 +21,18 @@ class Question extends React.Component{
     
     checkAnswer = (e) =>{
         question = this.props.question;
-        this.state.selectedAnswer == question.answer? 
+        if(this.state.selectedAnswer == question.answer){
             this.setState({
                 status: 'correct'
-            }) :
+            });
+            toAdd = 'right'
+        } else{
             this.setState({
                 status: 'inCorrect'
             });
+            toAdd = 'wrong'
+        }
+        this.props.updateScore(toAdd);
     }
     
     nextQuestion = () =>{
@@ -82,33 +87,58 @@ class Quiz extends React.Component{
         super(props),
         this.state = {
             phase: 'starting',
-            currentQuestion: 0
+            currentQuestion: 0,
+            right: 0,
+            wrong: 0
         }
+    }
+    
+    updateScore = (toAdd) =>{
+        if(toAdd === 'right'){
+            right = this.state.right+1
+            wrong = this.state.wrong
+        } else {
+            wrong = this.state.wrong+1
+            right = this.state.right
+        }
+        
+        this.setState({
+            right: right,
+            wrong: wrong
+        })
     }
     
     nextQuestion = () =>{
         this.setState((state, props) => ({
             currentQuestion: state.currentQuestion + 1
         }))
-        console.log(this.state.currentQuestion);
     }
     
     getQuizBody = () =>{
+        totalQuestions = this.props.quiz.questions.length;
         if(this.state.phase === 'starting'){
             return (
                 <div>
                     <span>{this.props.quiz.description}</span>
                     <br></br>
+                    <span>Total Questions: {totalQuestions}</span>
+                    <br></br>
                     <button onClick={()=>this.setState({phase:'quizzing'})}>Start</button>
                 </div>
             )
         } else if(this.state.phase == 'quizzing'){
+            questionNumber = this.state.currentQuestion + 1;
             return (
                 <div>
+                    <span>Right: {this.state.right} | Wrong: {this.state.wrong}</span>
+                    <br></br>
+                    <br></br>
+                    <span><b>Question: {questionNumber}/{totalQuestions}</b></span>
                     <Question 
                         question={this.props.quiz.questions[this.state.currentQuestion]} 
                         nextQuestion={this.nextQuestion}
                         status='unAnswered'
+                        updateScore={this.updateScore}
                     />
                 </div>
             )
