@@ -12,6 +12,16 @@ const quizzes = [
                 ],
                 answer: 2,
                 explanation: 'Life can not be good or bad, it can only be Meh'
+            },
+            {
+                question: 'How bad is life?',
+                options: [
+                    'Quite bad',
+                    'Somewhat bad',
+                    'Not bad at all'
+                ],
+                answer: 2,
+                explanation: "Since life is Meh, it can't be bad or good"
             }
         ]
     },

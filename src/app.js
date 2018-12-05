@@ -30,6 +30,13 @@ class Question extends React.Component{
             });
     }
     
+    nextQuestion = () =>{
+        this.setState({
+            status: 'unAnswered'
+        });
+        this.props.nextQuestion();
+    }
+    
     questionBody = () =>{
         status = this.state.status;
         question = this.props.question;
@@ -52,6 +59,8 @@ class Question extends React.Component{
                     <span>{message}</span>
                     <br></br>
                     <small>{this.props.question.explanation}</small>
+                    <br></br>
+                    <button onClick={this.nextQuestion}>Next ></button>
                 </div>
             )
         }
@@ -81,6 +90,7 @@ class Quiz extends React.Component{
         this.setState((state, props) => ({
             currentQuestion: state.currentQuestion + 1
         }))
+        console.log(this.state.currentQuestion);
     }
     
     getQuizBody = () =>{
@@ -98,6 +108,7 @@ class Quiz extends React.Component{
                     <Question 
                         question={this.props.quiz.questions[this.state.currentQuestion]} 
                         nextQuestion={this.nextQuestion}
+                        status='unAnswered'
                     />
                 </div>
             )

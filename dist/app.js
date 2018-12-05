@@ -39,6 +39,13 @@ var Question = function (_React$Component) {
             });
         };
 
+        _this.nextQuestion = function () {
+            _this.setState({
+                status: 'unAnswered'
+            });
+            _this.props.nextQuestion();
+        };
+
         _this.questionBody = function () {
             status = _this.state.status;
             question = _this.props.question;
@@ -74,6 +81,12 @@ var Question = function (_React$Component) {
                         'small',
                         null,
                         _this.props.question.explanation
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'button',
+                        { onClick: _this.nextQuestion },
+                        'Next >'
                     )
                 );
             }
@@ -119,6 +132,7 @@ var Quiz = function (_React$Component2) {
                     currentQuestion: state.currentQuestion + 1
                 };
             });
+            console.log(_this2.state.currentQuestion);
         }, _this2.getQuizBody = function () {
             if (_this2.state.phase === 'starting') {
                 return React.createElement(
@@ -144,7 +158,8 @@ var Quiz = function (_React$Component2) {
                     null,
                     React.createElement(Question, {
                         question: _this2.props.quiz.questions[_this2.state.currentQuestion],
-                        nextQuestion: _this2.nextQuestion
+                        nextQuestion: _this2.nextQuestion,
+                        status: 'unAnswered'
                     })
                 );
             }
