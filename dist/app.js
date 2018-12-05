@@ -32,12 +32,56 @@ var Question = function (_React$Component) {
 
         _this.checkAnswer = function (e) {
             question = _this.props.question;
-            console.log(_this.state.selectedAnswer == question.answer);
-            console.log(question.explanation);
+            _this.state.selectedAnswer == question.answer ? _this.setState({
+                status: 'correct'
+            }) : _this.setState({
+                status: 'inCorrect'
+            });
+        };
+
+        _this.questionBody = function () {
+            status = _this.state.status;
+            question = _this.props.question;
+
+            if (status === 'unAnswered') {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'select',
+                        { onChange: _this.changeAnswer, value: _this.state.selectedAnswer },
+                        _this.renderOptions()
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'button',
+                        { onClick: _this.checkAnswer },
+                        'Check'
+                    )
+                );
+            } else {
+                message = status === 'correct' ? 'Correct!' : 'WRONG!' + ' Correct answer is ' + question.options[question.answer];
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'span',
+                        null,
+                        message
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'small',
+                        null,
+                        _this.props.question.explanation
+                    )
+                );
+            }
         };
 
         _this.state = {
-            selectedAnswer: 0
+            selectedAnswer: 0,
+            status: 'unAnswered'
         };
         return _this;
     }
@@ -53,17 +97,7 @@ var Question = function (_React$Component) {
                     null,
                     this.props.question.question
                 ),
-                React.createElement(
-                    'select',
-                    { onChange: this.changeAnswer, value: this.state.selectedAnswer },
-                    this.renderOptions()
-                ),
-                React.createElement('br', null),
-                React.createElement(
-                    'button',
-                    { onClick: this.checkAnswer },
-                    'Check'
-                )
+                this.questionBody()
             );
         }
     }]);

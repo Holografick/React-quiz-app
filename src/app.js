@@ -2,7 +2,8 @@ class Question extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            selectedAnswer : 0
+            selectedAnswer : 0,
+            status: 'unAnswered'
         }
     }
     
@@ -20,19 +21,47 @@ class Question extends React.Component{
     
     checkAnswer = (e) =>{
         question = this.props.question;
-        console.log(this.state.selectedAnswer == question.answer);
-        console.log(question.explanation);
+        this.state.selectedAnswer == question.answer? 
+            this.setState({
+                status: 'correct'
+            }) :
+            this.setState({
+                status: 'inCorrect'
+            });
+    }
+    
+    questionBody = () =>{
+        status = this.state.status;
+        question = this.props.question;
+        
+        if(status === 'unAnswered'){
+            return (
+                <div>
+                    <select onChange={this.changeAnswer} value={this.state.selectedAnswer}>
+                        {this.renderOptions()}
+                    </select>
+                    <br></br>
+                    <button onClick={this.checkAnswer}>Check</button>                
+                </div>
+            )
+        } else {
+            message = 
+                status === 'correct'?  'Correct!' : ('WRONG!' + ' Correct answer is '+question.options[question.answer])
+            return (
+                <div>
+                    <span>{message}</span>
+                    <br></br>
+                    <small>{this.props.question.explanation}</small>
+                </div>
+            )
+        }
     }
     
     render(){
         return (
             <div>
                 <h3>{this.props.question.question}</h3>
-                <select onChange={this.changeAnswer} value={this.state.selectedAnswer}>
-                    {this.renderOptions()}
-                </select>
-                <br></br>
-                <button onClick={this.checkAnswer}>Check</button>
+                    {this.questionBody()}
             </div>
         )
     }
