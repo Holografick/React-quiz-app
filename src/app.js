@@ -1,14 +1,61 @@
 const quizzes = [
     {
         name: 'Some Quiz',
-        description: 'This is some quiz'
+        description: 'This is some quiz',
+        questions: [
+            {
+                question: 'How is life?',
+                options: [
+                    'Good',
+                    'Bad',
+                    'Meh'
+                ],
+                answer: 2,
+                explanation: 'Life can not be good or bad, it can only be Meh'
+            }
+        ]
     },
     {
         name: 'Other Quiz',
-        description: 'This is the other quiz'
+        description: 'This is the other quiz',
+        questions: [
+            {
+                question: 'Are you stupid?',
+                options: [
+                    'Yes',
+                    'No',
+                    'I R Baboon'
+                ],
+                answer: 0,
+                explanation: 'You are actually stupid'
+            }
+        ]
     },
     
 ]
+
+class Question extends React.Component{
+    constructor(props){
+        super(props)
+    }
+    
+    renderOptions = () =>{
+        return this.props.question.options.map( (o, i) =>{
+            return <option value={i}>{o}</option>
+        })
+    }
+    
+    render(){
+        return (
+            <div>
+                <h3>{this.props.question.question}</h3>
+                <select>
+                    {this.renderOptions()}
+                </select>
+            </div>
+        )
+    }
+}
 
 class Quiz extends React.Component{
     constructor(props){
@@ -21,6 +68,7 @@ class Quiz extends React.Component{
                 <button onClick={this.props.backToMenu}>Back to Menu</button>
                 <h3>{this.props.quiz.name}</h3>
                 <span>{this.props.quiz.description}</span>
+                <Question question={this.props.quiz.questions[0]} />
             </div>
         )
     }
@@ -55,8 +103,6 @@ class App extends React.Component{
     }
     
     render(){
-                        // <li onClick={(e) => this.selectQuiz(1)}>Quiz 1</li>
-                        // <li onClick={(e) => this.selectQuiz(2)}>Quiz 2</li>
         if(this.state.status === 'browsing'){
             return (
                 <div>

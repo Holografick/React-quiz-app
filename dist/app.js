@@ -8,14 +8,70 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var quizzes = [{
     name: 'Some Quiz',
-    description: 'This is some quiz'
+    description: 'This is some quiz',
+    questions: [{
+        question: 'How is life?',
+        options: ['Good', 'Bad', 'Meh'],
+        answer: 2,
+        explanation: 'Life can not be good or bad, it can only be Meh'
+    }]
 }, {
     name: 'Other Quiz',
-    description: 'This is the other quiz'
+    description: 'This is the other quiz',
+    questions: [{
+        question: 'Are you stupid?',
+        options: ['Yes', 'No', 'I R Baboon'],
+        answer: 0,
+        explanation: 'You are actually stupid'
+    }]
 }];
 
-var Quiz = function (_React$Component) {
-    _inherits(Quiz, _React$Component);
+var Question = function (_React$Component) {
+    _inherits(Question, _React$Component);
+
+    function Question(props) {
+        _classCallCheck(this, Question);
+
+        var _this = _possibleConstructorReturn(this, (Question.__proto__ || Object.getPrototypeOf(Question)).call(this, props));
+
+        _this.renderOptions = function () {
+            return _this.props.question.options.map(function (o, i) {
+                return React.createElement(
+                    'option',
+                    { value: i },
+                    o
+                );
+            });
+        };
+
+        return _this;
+    }
+
+    _createClass(Question, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'h3',
+                    null,
+                    this.props.question.question
+                ),
+                React.createElement(
+                    'select',
+                    null,
+                    this.renderOptions()
+                )
+            );
+        }
+    }]);
+
+    return Question;
+}(React.Component);
+
+var Quiz = function (_React$Component2) {
+    _inherits(Quiz, _React$Component2);
 
     function Quiz(props) {
         _classCallCheck(this, Quiz);
@@ -43,7 +99,8 @@ var Quiz = function (_React$Component) {
                     'span',
                     null,
                     this.props.quiz.description
-                )
+                ),
+                React.createElement(Question, { question: this.props.quiz.questions[0] })
             );
         }
     }]);
@@ -51,51 +108,49 @@ var Quiz = function (_React$Component) {
     return Quiz;
 }(React.Component);
 
-var App = function (_React$Component2) {
-    _inherits(App, _React$Component2);
+var App = function (_React$Component3) {
+    _inherits(App, _React$Component3);
 
     function App(props) {
         _classCallCheck(this, App);
 
-        var _this2 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this2.selectQuiz = function (selected) {
-            _this2.setState({
+        _this3.selectQuiz = function (selected) {
+            _this3.setState({
                 status: 'quizzing',
                 quiz: selected
             });
         };
 
-        _this2.backToMenu = function () {
-            _this2.setState({
+        _this3.backToMenu = function () {
+            _this3.setState({
                 status: 'browsing'
             });
         };
 
-        _this2.quizList = function () {
-            return _this2.props.quizzes.map(function (q) {
+        _this3.quizList = function () {
+            return _this3.props.quizzes.map(function (q) {
                 return React.createElement(
                     'li',
                     { key: q.name, onClick: function onClick(e) {
-                            return _this2.selectQuiz(q);
+                            return _this3.selectQuiz(q);
                         } },
                     q.name
                 );
             });
         };
 
-        _this2.state = {
+        _this3.state = {
             status: 'browsing',
             quiz: null
         };
-        return _this2;
+        return _this3;
     }
 
     _createClass(App, [{
         key: 'render',
         value: function render() {
-            // <li onClick={(e) => this.selectQuiz(1)}>Quiz 1</li>
-            // <li onClick={(e) => this.selectQuiz(2)}>Quiz 2</li>
             if (this.state.status === 'browsing') {
                 return React.createElement(
                     'div',
