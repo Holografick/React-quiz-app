@@ -1,4 +1,4 @@
-const quizzes = [
+const quizList = [
     {
         name: 'Some Quiz',
         description: 'This is some quiz',
