@@ -33,16 +33,15 @@ var Question = function (_React$Component) {
         _this.checkAnswer = function (e) {
             question = _this.props.question;
             if (_this.state.selectedAnswer == question.answer) {
-                _this.setState({
-                    status: 'correct'
-                });
+                status = 'correct';
                 toAdd = 'right';
             } else {
-                _this.setState({
-                    status: 'inCorrect'
-                });
+                status = 'inCorrect';
                 toAdd = 'wrong';
             }
+            _this.setState({
+                status: status
+            });
             _this.props.updateScore(toAdd);
         };
 
@@ -147,11 +146,16 @@ var Quiz = function (_React$Component2) {
                 wrong: wrong
             });
         }, _this2.nextQuestion = function () {
-            _this2.setState(function (state, props) {
-                return {
-                    currentQuestion: state.currentQuestion + 1
-                };
-            });
+            nextNumber = _this2.state.currentQuestion + 1;
+            if (nextNumber < _this2.props.quiz.questions.length) {
+                _this2.setState(function (state, props) {
+                    return {
+                        currentQuestion: state.currentQuestion + 1
+                    };
+                });
+            } else {
+                _this2.setState({ phase: 'finished' });
+            }
         }, _this2.getQuizBody = function () {
             totalQuestions = _this2.props.quiz.questions.length;
             if (_this2.state.phase === 'starting') {
@@ -212,6 +216,20 @@ var Quiz = function (_React$Component2) {
                         status: 'unAnswered',
                         updateScore: _this2.updateScore
                     })
+                );
+            } else if (_this2.state.phase == 'finished') {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'h3',
+                        null,
+                        'You got ',
+                        _this2.state.right,
+                        ' out of ',
+                        totalQuestions,
+                        ' questions right'
+                    )
                 );
             }
         }, _temp), _this2.state = {

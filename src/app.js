@@ -22,16 +22,15 @@ class Question extends React.Component{
     checkAnswer = (e) =>{
         question = this.props.question;
         if(this.state.selectedAnswer == question.answer){
-            this.setState({
-                status: 'correct'
-            });
-            toAdd = 'right'
+            status = 'correct';
+            toAdd = 'right';
         } else{
-            this.setState({
-                status: 'inCorrect'
-            });
-            toAdd = 'wrong'
+            status = 'inCorrect';
+            toAdd = 'wrong';
         }
+        this.setState({
+            status: status
+        });
         this.props.updateScore(toAdd);
     }
     
@@ -109,9 +108,14 @@ class Quiz extends React.Component{
     }
     
     nextQuestion = () =>{
-        this.setState((state, props) => ({
-            currentQuestion: state.currentQuestion + 1
-        }))
+        nextNumber = this.state.currentQuestion + 1;
+        if(nextNumber < this.props.quiz.questions.length){
+            this.setState((state, props) => ({
+                currentQuestion: state.currentQuestion + 1
+            }))            
+        } else {
+            this.setState({phase: 'finished'})
+        }
     }
     
     getQuizBody = () =>{
@@ -140,6 +144,12 @@ class Quiz extends React.Component{
                         status='unAnswered'
                         updateScore={this.updateScore}
                     />
+                </div>
+            )
+        } else if(this.state.phase == 'finished'){
+            return (
+                <div>
+                    <h3>You got {this.state.right} out of {totalQuestions} questions right</h3>
                 </div>
             )
         }
