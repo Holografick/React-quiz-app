@@ -33,7 +33,7 @@ var App = function (_React$Component) {
 
         _this.backToMenu = function () {
             _this.setState({
-                status: 'browsing'
+                status: appStatus['browsing']
             });
         };
 
@@ -60,6 +60,12 @@ var App = function (_React$Component) {
     _createClass(App, [{
         key: 'render',
         value: function render() {
+            backButton = React.createElement(
+                'button',
+                { onClick: this.backToMenu },
+                'Back to Menu'
+            );
+
             if (this.state.status === appStatus['browsing']) {
                 return React.createElement(
                     'div',
@@ -82,13 +88,9 @@ var App = function (_React$Component) {
                     )
                 );
             } else if (this.state.status === appStatus['creating']) {
-                return React.createElement(
-                    'div',
-                    null,
-                    'Create a new Quiz'
-                );
+                return React.createElement(QuizMaker, { backButton: backButton });
             } else if (this.state.status === appStatus['quizzing']) {
-                return React.createElement(Quiz, { quiz: this.state.quiz, backToMenu: this.backToMenu });
+                return React.createElement(Quiz, { quiz: this.state.quiz, backButton: backButton });
             }
         }
     }]);

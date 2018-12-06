@@ -27,7 +27,7 @@ class App extends React.Component{
     
     backToMenu = () =>{
         this.setState({
-            status: 'browsing'
+            status: appStatus['browsing']
         })
     }
     
@@ -38,6 +38,8 @@ class App extends React.Component{
     }
     
     render(){
+        backButton = <button onClick={this.backToMenu}>Back to Menu</button>
+        
         if(this.state.status === appStatus['browsing']){
             return (
                 <div>
@@ -51,13 +53,11 @@ class App extends React.Component{
             )
         } else if(this.state.status === appStatus['creating']){
             return (
-                <div>
-                    Create a new Quiz
-                </div>
+                <QuizMaker backButton={backButton}/>
             )
         }else if(this.state.status === appStatus['quizzing']){
             return (
-                <Quiz quiz={this.state.quiz} backToMenu={this.backToMenu}/>
+                <Quiz quiz={this.state.quiz} backButton={backButton}/>
             )
         }
     }

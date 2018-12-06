@@ -158,7 +158,7 @@ class Quiz extends React.Component{
     render(){
         return (
             <div>
-                <button onClick={this.props.backToMenu}>Back to Menu</button>
+                {this.props.backButton}
                 <h2>{this.props.quiz.name}</h2>
                     {this.getQuizBody()}
             </div>

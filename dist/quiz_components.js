@@ -247,11 +247,7 @@ var Quiz = function (_React$Component2) {
             return React.createElement(
                 'div',
                 null,
-                React.createElement(
-                    'button',
-                    { onClick: this.props.backToMenu },
-                    'Back to Menu'
-                ),
+                this.props.backButton,
                 React.createElement(
                     'h2',
                     null,
