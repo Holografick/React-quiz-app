@@ -1,8 +1,14 @@
+var appStatus = {
+        browsing: 'b',
+        creating: 'c',
+        quizzing: 'q'
+    }
+
 class App extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            status: 'browsing',
+            status: appStatus['browsing'],
             quizList: this.props.quizList,
             quiz: null
         };
@@ -10,40 +16,13 @@ class App extends React.Component{
     
     selectQuiz = (selected) =>{
         this.setState({
-            status: 'quizzing',
+            status: appStatus['quizzing'],
             quiz: selected
         })
     }
     
     addQuiz = (newQuiz) =>{
-        quizList = this.state.quizList;
-        quizList.push({
-            name: 'New Quiz',
-            description: 'This is a new quiz',
-            questions: [
-                {
-                    question: 'Is this a new quiz?',
-                    options: [
-                        'Yes',
-                        'No',
-                        'I dont know'
-                    ],
-                    answer: 0,
-                    explanation: 'Ofcourse it is'
-                },
-                {
-                    question: 'Is this an old quiz?',
-                    options: [
-                        'Yes',
-                        'No',
-                        'Meh'
-                    ],
-                    answer: 2,
-                    explanation: 'Oldness is relative'
-                }
-            ]
-        });
-        this.setState({quizList: quizList});
+        this.setState({status: appStatus['creating']});
     }
     
     backToMenu = () =>{
@@ -59,7 +38,7 @@ class App extends React.Component{
     }
     
     render(){
-        if(this.state.status === 'browsing'){
+        if(this.state.status === appStatus['browsing']){
             return (
                 <div>
                     <h1>Select quiz you wish to take</h1>
@@ -70,7 +49,13 @@ class App extends React.Component{
                     <button onClick={this.addQuiz}> + Add Quiz </button>
                 </div> 
             )
-        } else if(this.state.status === 'quizzing'){
+        } else if(this.state.status === appStatus['creating']){
+            return (
+                <div>
+                    Create a new Quiz
+                </div>
+            )
+        }else if(this.state.status === appStatus['quizzing']){
             return (
                 <Quiz quiz={this.state.quiz} backToMenu={this.backToMenu}/>
             )

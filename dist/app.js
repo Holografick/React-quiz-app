@@ -6,6 +6,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var appStatus = {
+    browsing: 'b',
+    creating: 'c',
+    quizzing: 'q'
+};
+
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
 
@@ -16,29 +22,13 @@ var App = function (_React$Component) {
 
         _this.selectQuiz = function (selected) {
             _this.setState({
-                status: 'quizzing',
+                status: appStatus['quizzing'],
                 quiz: selected
             });
         };
 
         _this.addQuiz = function (newQuiz) {
-            quizList = _this.state.quizList;
-            quizList.push({
-                name: 'New Quiz',
-                description: 'This is a new quiz',
-                questions: [{
-                    question: 'Is this a new quiz?',
-                    options: ['Yes', 'No', 'I dont know'],
-                    answer: 0,
-                    explanation: 'Ofcourse it is'
-                }, {
-                    question: 'Is this an old quiz?',
-                    options: ['Yes', 'No', 'Meh'],
-                    answer: 2,
-                    explanation: 'Oldness is relative'
-                }]
-            });
-            _this.setState({ quizList: quizList });
+            _this.setState({ status: appStatus['creating'] });
         };
 
         _this.backToMenu = function () {
@@ -60,7 +50,7 @@ var App = function (_React$Component) {
         };
 
         _this.state = {
-            status: 'browsing',
+            status: appStatus['browsing'],
             quizList: _this.props.quizList,
             quiz: null
         };
@@ -70,7 +60,7 @@ var App = function (_React$Component) {
     _createClass(App, [{
         key: 'render',
         value: function render() {
-            if (this.state.status === 'browsing') {
+            if (this.state.status === appStatus['browsing']) {
                 return React.createElement(
                     'div',
                     null,
@@ -91,7 +81,13 @@ var App = function (_React$Component) {
                         ' + Add Quiz '
                     )
                 );
-            } else if (this.state.status === 'quizzing') {
+            } else if (this.state.status === appStatus['creating']) {
+                return React.createElement(
+                    'div',
+                    null,
+                    'Create a new Quiz'
+                );
+            } else if (this.state.status === appStatus['quizzing']) {
                 return React.createElement(Quiz, { quiz: this.state.quiz, backToMenu: this.backToMenu });
             }
         }
