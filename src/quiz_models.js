@@ -1,7 +1,7 @@
 const quizList = [
     {
-        name: 'Some Quiz',
-        description: 'This is some quiz',
+        name: 'The Quiz of Life',
+        description: 'This is the quiz of life, check how much you know life by taking this quiz',
         questions: [
             {
                 question: 'How is life?',
@@ -26,8 +26,8 @@ const quizList = [
         ]
     },
     {
-        name: 'Other Quiz',
-        description: 'This is the other quiz',
+        name: 'Stupid Quiz',
+        description: 'Take this quiz to discover how stupid you are',
         questions: [
             {
                 question: 'Are you stupid?',

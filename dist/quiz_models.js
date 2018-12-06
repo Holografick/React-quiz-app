@@ -1,6 +1,6 @@
 var quizList = [{
-    name: 'Some Quiz',
-    description: 'This is some quiz',
+    name: 'The Quiz of Life',
+    description: 'This is the quiz of life, check how much you know life by taking this quiz',
     questions: [{
         question: 'How is life?',
         options: ['Good', 'Bad', 'Meh'],
@@ -13,8 +13,8 @@ var quizList = [{
         explanation: "Since life is Meh, it can't be bad or good"
     }]
 }, {
-    name: 'Other Quiz',
-    description: 'This is the other quiz',
+    name: 'Stupid Quiz',
+    description: 'Take this quiz to discover how stupid you are',
     questions: [{
         question: 'Are you stupid?',
         options: ['Yes', 'No', 'I R Baboon'],

@@ -21,8 +21,16 @@ class App extends React.Component{
         })
     }
     
-    addQuiz = (newQuiz) =>{
+    createQuiz = () =>{
         this.setState({status: appStatus['creating']});
+    }
+    
+    addQuiz = (newQuiz) =>{
+        quizList = this.state.quizList;
+        quizList.push(newQuiz);
+        this.setState({
+            quizList: quizList
+        });
     }
     
     backToMenu = () =>{
@@ -48,12 +56,16 @@ class App extends React.Component{
                         {this.renderQuizList()}
                     </ul>
                     <br></br>
-                    <button onClick={this.addQuiz}> + Add Quiz </button>
+                    <button onClick={this.createQuiz}> + Create new Quiz </button>
                 </div> 
             )
         } else if(this.state.status === appStatus['creating']){
             return (
-                <QuizMaker backButton={backButton}/>
+                <QuizMaker 
+                    addQuiz={this.addQuiz}
+                    backButton={backButton}
+                    backToMenu={this.backToMenu}
+                />
             )
         }else if(this.state.status === appStatus['quizzing']){
             return (

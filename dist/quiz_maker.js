@@ -12,20 +12,44 @@ var QuizMaker = function (_React$Component) {
     function QuizMaker(props) {
         _classCallCheck(this, QuizMaker);
 
-        return _possibleConstructorReturn(this, (QuizMaker.__proto__ || Object.getPrototypeOf(QuizMaker)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (QuizMaker.__proto__ || Object.getPrototypeOf(QuizMaker)).call(this, props));
+
+        _this.addQuiz = function () {
+            _this.props.addQuiz(_this.state.newQuiz);
+            _this.props.backToMenu();
+        };
+
+        _this.state = {
+            newQuiz: {
+                name: 'New Quiz',
+                description: 'Add a description',
+                questions: [{
+                    question: 'Some Question',
+                    options: ['bleh', 'brlblr', 'hoccana'],
+                    answer: 0,
+                    explanation: 'wassup'
+                }]
+            }
+        };
+        return _this;
     }
 
     _createClass(QuizMaker, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "div",
+                'div',
                 null,
                 this.props.backButton,
                 React.createElement(
-                    "h1",
+                    'h1',
                     null,
-                    "Create a new Quiz"
+                    'Create a new Quiz'
+                ),
+                React.createElement(
+                    'button',
+                    { onClick: this.addQuiz },
+                    '+ Add Quiz'
                 )
             );
         }

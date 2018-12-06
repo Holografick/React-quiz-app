@@ -27,8 +27,16 @@ var App = function (_React$Component) {
             });
         };
 
-        _this.addQuiz = function (newQuiz) {
+        _this.createQuiz = function () {
             _this.setState({ status: appStatus['creating'] });
+        };
+
+        _this.addQuiz = function (newQuiz) {
+            quizList = _this.state.quizList;
+            quizList.push(newQuiz);
+            _this.setState({
+                quizList: quizList
+            });
         };
 
         _this.backToMenu = function () {
@@ -83,12 +91,16 @@ var App = function (_React$Component) {
                     React.createElement('br', null),
                     React.createElement(
                         'button',
-                        { onClick: this.addQuiz },
-                        ' + Add Quiz '
+                        { onClick: this.createQuiz },
+                        ' + Create new Quiz '
                     )
                 );
             } else if (this.state.status === appStatus['creating']) {
-                return React.createElement(QuizMaker, { backButton: backButton });
+                return React.createElement(QuizMaker, {
+                    addQuiz: this.addQuiz,
+                    backButton: backButton,
+                    backToMenu: this.backToMenu
+                });
             } else if (this.state.status === appStatus['quizzing']) {
                 return React.createElement(Quiz, { quiz: this.state.quiz, backButton: backButton });
             }
