@@ -19,6 +19,14 @@ var QuizMaker = function (_React$Component) {
             _this.props.backToMenu();
         };
 
+        _this.changeQuizInfo = function (changeKey, val) {
+            quiz = JSON.parse(JSON.stringify(_this.state.newQuiz));
+            quiz[changeKey] = val;
+            _this.setState({
+                newQuiz: quiz
+            });
+        };
+
         _this.state = {
             newQuiz: {
                 name: 'New Quiz',
@@ -37,6 +45,16 @@ var QuizMaker = function (_React$Component) {
     _createClass(QuizMaker, [{
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
+            questionMakers = this.state.newQuiz.questions.map(function (q) {
+                return React.createElement(
+                    'li',
+                    null,
+                    q.question
+                );
+            });
+
             return React.createElement(
                 'div',
                 null,
@@ -46,6 +64,42 @@ var QuizMaker = function (_React$Component) {
                     null,
                     'Create a new Quiz'
                 ),
+                React.createElement(
+                    'label',
+                    { htmlFor: 'quiz-name' },
+                    'Quiz Name: '
+                ),
+                React.createElement('input', {
+                    id: 'quiz-name',
+                    type: 'text',
+                    value: this.state.newQuiz.name,
+                    onChange: function onChange(e) {
+                        return _this2.changeQuizInfo('name', e.target.value);
+                    }
+                }),
+                React.createElement('br', null),
+                React.createElement(
+                    'label',
+                    { htmlFor: 'quiz-description' },
+                    'Description: '
+                ),
+                React.createElement('input', {
+                    id: 'quiz-description',
+                    type: 'text',
+                    value: this.state.newQuiz.description,
+                    onChange: function onChange(e) {
+                        return _this2.changeQuizInfo('description', e.target.value);
+                    }
+                }),
+                React.createElement('br', null),
+                React.createElement('br', null),
+                'Questions:',
+                React.createElement(
+                    'ul',
+                    null,
+                    questionMakers
+                ),
+                React.createElement('br', null),
                 React.createElement(
                     'button',
                     { onClick: this.addQuiz },
