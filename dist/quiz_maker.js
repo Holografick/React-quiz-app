@@ -105,13 +105,15 @@ var QuizMaker = function (_React$Component2) {
             var _this4 = this;
 
             questions = this.state.newQuiz.questions;
+            questionsRemovable = questions.length > 1 ? true : false;
+
             questionMakers = questions.map(function (q, i) {
                 return React.createElement(QuestionMaker, {
                     key: i,
                     number: i,
                     question: q,
                     removeQuestion: _this4.removeQuestion,
-                    removable: questions.length > 1 ? true : false
+                    removable: questionsRemovable
                 });
             });
 

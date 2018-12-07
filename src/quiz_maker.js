@@ -80,6 +80,8 @@ class QuizMaker extends React.Component{
     
     render(){
 		questions = this.state.newQuiz.questions;
+		questionsRemovable = questions.length > 1? true : false
+
         questionMakers = 
             questions.map( (q,i) =>(
                 <QuestionMaker
@@ -87,7 +89,7 @@ class QuizMaker extends React.Component{
 					number={i}
 					question={q}
 					removeQuestion={this.removeQuestion}
-					removable={questions.length > 1? true : false}
+					removable={questionsRemovable}
 				/>
             ))
         
