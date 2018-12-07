@@ -6,28 +6,51 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var QuizMaker = function (_React$Component) {
-    _inherits(QuizMaker, _React$Component);
+var QuestionMaker = function (_React$Component) {
+    _inherits(QuestionMaker, _React$Component);
+
+    function QuestionMaker(props) {
+        _classCallCheck(this, QuestionMaker);
+
+        return _possibleConstructorReturn(this, (QuestionMaker.__proto__ || Object.getPrototypeOf(QuestionMaker)).call(this, props));
+    }
+
+    _createClass(QuestionMaker, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                'div',
+                { key: question.question, style: { border: '1px solid black' } },
+                this.props.question.question
+            );
+        }
+    }]);
+
+    return QuestionMaker;
+}(React.Component);
+
+var QuizMaker = function (_React$Component2) {
+    _inherits(QuizMaker, _React$Component2);
 
     function QuizMaker(props) {
         _classCallCheck(this, QuizMaker);
 
-        var _this = _possibleConstructorReturn(this, (QuizMaker.__proto__ || Object.getPrototypeOf(QuizMaker)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (QuizMaker.__proto__ || Object.getPrototypeOf(QuizMaker)).call(this, props));
 
-        _this.addQuiz = function () {
-            _this.props.addQuiz(_this.state.newQuiz);
-            _this.props.backToMenu();
+        _this2.addQuiz = function () {
+            _this2.props.addQuiz(_this2.state.newQuiz);
+            _this2.props.backToMenu();
         };
 
-        _this.changeQuizInfo = function (changeKey, val) {
-            quiz = JSON.parse(JSON.stringify(_this.state.newQuiz));
+        _this2.changeQuizInfo = function (changeKey, val) {
+            quiz = JSON.parse(JSON.stringify(_this2.state.newQuiz));
             quiz[changeKey] = val;
-            _this.setState({
+            _this2.setState({
                 newQuiz: quiz
             });
         };
 
-        _this.state = {
+        _this2.state = {
             newQuiz: {
                 name: 'New Quiz',
                 description: 'Add a description',
@@ -39,20 +62,16 @@ var QuizMaker = function (_React$Component) {
                 }]
             }
         };
-        return _this;
+        return _this2;
     }
 
     _createClass(QuizMaker, [{
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             questionMakers = this.state.newQuiz.questions.map(function (q) {
-                return React.createElement(
-                    'li',
-                    null,
-                    q.question
-                );
+                return React.createElement(QuestionMaker, { question: q });
             });
 
             return React.createElement(
@@ -74,7 +93,7 @@ var QuizMaker = function (_React$Component) {
                     type: 'text',
                     value: this.state.newQuiz.name,
                     onChange: function onChange(e) {
-                        return _this2.changeQuizInfo('name', e.target.value);
+                        return _this3.changeQuizInfo('name', e.target.value);
                     }
                 }),
                 React.createElement('br', null),
@@ -88,17 +107,12 @@ var QuizMaker = function (_React$Component) {
                     type: 'text',
                     value: this.state.newQuiz.description,
                     onChange: function onChange(e) {
-                        return _this2.changeQuizInfo('description', e.target.value);
+                        return _this3.changeQuizInfo('description', e.target.value);
                     }
                 }),
                 React.createElement('br', null),
                 React.createElement('br', null),
-                'Questions:',
-                React.createElement(
-                    'ul',
-                    null,
-                    questionMakers
-                ),
+                questionMakers,
                 React.createElement('br', null),
                 React.createElement(
                     'button',

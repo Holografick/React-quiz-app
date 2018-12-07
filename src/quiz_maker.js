@@ -1,3 +1,16 @@
+class QuestionMaker extends React.Component{
+    constructor(props){
+        super(props);
+	}
+	
+	render(){
+		return (
+			<div key={question.question} style={{border: '1px solid black'}}>{this.props.question.question}</div>
+		)
+	}
+}
+
+
 class QuizMaker extends React.Component{
     constructor(props){
         super(props);
@@ -37,7 +50,7 @@ class QuizMaker extends React.Component{
     render(){
         questionMakers = 
             this.state.newQuiz.questions.map( q =>(
-                <li>{q.question}</li>
+                <QuestionMaker question={q}/>
             ))
         
         return (
@@ -64,8 +77,7 @@ class QuizMaker extends React.Component{
                 <br></br>
                 <br></br>
                 
-                Questions:
-                <ul>{questionMakers}</ul>
+                {questionMakers}
                 
                 <br></br>
                 <button onClick={this.addQuiz}>+ Add Quiz</button>
