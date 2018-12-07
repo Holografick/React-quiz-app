@@ -8,7 +8,9 @@ class QuestionMaker extends React.Component{
 		return (
 			<div>
 				<div key={q.question} style={{border: '1px solid black'}}>{q.question}</div>
-				<button onClick={() =>this.props.addQuestion(q)}>Add Question</button>
+				<button onClick={() =>this.props.removeQuestion(this.props.number)}>
+					Remove Question
+				</button>
 			</div>
 		)
 	}
@@ -37,7 +39,7 @@ class QuizMaker extends React.Component{
             }
         }
     }
-    
+	
     addQuiz = () =>{
         this.props.addQuiz(this.state.newQuiz);
         this.props.backToMenu();
@@ -51,16 +53,24 @@ class QuizMaker extends React.Component{
         })
     }
 	
-    addQuestion = (newQuestion) =>{
-        questionList = JSON.parse(JSON.stringify(this.state.newQuiz.questions));
-        questionList.push(newQuestion);
-        this.changeQuizInfo('questions', questionList);
-    }
+    addQuestion = 
+		(newQuestion = this.state.newQuiz.questions[this.state.newQuiz.questions.length-1]) =>{
+			questionList = JSON.parse(JSON.stringify(this.state.newQuiz.questions));
+			newQuestion.question = this.state.newQuiz.questions.length-1
+			questionList.push(newQuestion);
+			this.changeQuizInfo('questions', questionList);
+		}
+		
+	removeQuestion = (qNumber) =>{
+		questionList = JSON.parse(JSON.stringify(this.state.newQuiz.questions));
+		questionList.splice(qNumber, 1);
+		this.changeQuizInfo('questions', questionList);
+	}
     
     render(){
         questionMakers = 
-            this.state.newQuiz.questions.map( q =>(
-                <QuestionMaker question={q} addQuestion={this.addQuestion}/>
+            this.state.newQuiz.questions.map( (q,i) =>(
+                <QuestionMaker key={i} number={i} question={q} removeQuestion={this.removeQuestion}/>
             ))
         
         return (
@@ -86,10 +96,13 @@ class QuizMaker extends React.Component{
                 />
                 <br></br>
                 <br></br>
-                
+                Questions:
                 {questionMakers}
                 
-                <br></br>
+				<br></br>
+				<button onClick={() => this.addQuestion()}>Add another question</button>
+                
+				<br></br>
                 <button onClick={this.addQuiz}>+ Add Quiz</button>
             </div>
         )

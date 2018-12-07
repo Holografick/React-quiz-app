@@ -80,7 +80,6 @@ class Question extends React.Component{
     }
 }
 
-
 class Quiz extends React.Component{
     constructor(props){
         super(props),

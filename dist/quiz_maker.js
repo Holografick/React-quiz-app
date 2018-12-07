@@ -32,9 +32,9 @@ var QuestionMaker = function (_React$Component) {
                 React.createElement(
                     'button',
                     { onClick: function onClick() {
-                            return _this2.props.addQuestion(q);
+                            return _this2.props.removeQuestion(_this2.props.number);
                         } },
-                    'Add Question'
+                    'Remove Question'
                 )
             );
         }
@@ -64,9 +64,18 @@ var QuizMaker = function (_React$Component2) {
             });
         };
 
-        _this3.addQuestion = function (newQuestion) {
+        _this3.addQuestion = function () {
+            var newQuestion = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this3.state.newQuiz.questions[_this3.state.newQuiz.questions.length - 1];
+
             questionList = JSON.parse(JSON.stringify(_this3.state.newQuiz.questions));
+            newQuestion.question = _this3.state.newQuiz.questions.length - 1;
             questionList.push(newQuestion);
+            _this3.changeQuizInfo('questions', questionList);
+        };
+
+        _this3.removeQuestion = function (qNumber) {
+            questionList = JSON.parse(JSON.stringify(_this3.state.newQuiz.questions));
+            questionList.splice(qNumber, 1);
             _this3.changeQuizInfo('questions', questionList);
         };
 
@@ -90,8 +99,8 @@ var QuizMaker = function (_React$Component2) {
         value: function render() {
             var _this4 = this;
 
-            questionMakers = this.state.newQuiz.questions.map(function (q) {
-                return React.createElement(QuestionMaker, { question: q, addQuestion: _this4.addQuestion });
+            questionMakers = this.state.newQuiz.questions.map(function (q, i) {
+                return React.createElement(QuestionMaker, { key: i, number: i, question: q, removeQuestion: _this4.removeQuestion });
             });
 
             return React.createElement(
@@ -132,7 +141,16 @@ var QuizMaker = function (_React$Component2) {
                 }),
                 React.createElement('br', null),
                 React.createElement('br', null),
+                'Questions:',
                 questionMakers,
+                React.createElement('br', null),
+                React.createElement(
+                    'button',
+                    { onClick: function onClick() {
+                            return _this4.addQuestion();
+                        } },
+                    'Add another question'
+                ),
                 React.createElement('br', null),
                 React.createElement(
                     'button',
