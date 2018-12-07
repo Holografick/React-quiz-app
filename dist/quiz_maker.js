@@ -21,21 +21,26 @@ var QuestionMaker = function (_React$Component) {
             var _this2 = this;
 
             q = this.props.question;
-            return React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    'div',
-                    { key: q.question, style: { border: '1px solid black' } },
-                    q.question
-                ),
-                React.createElement(
+
+            if (this.props.removable) {
+                removeButton = React.createElement(
                     'button',
                     { onClick: function onClick() {
                             return _this2.props.removeQuestion(_this2.props.number);
                         } },
                     'Remove Question'
-                )
+                );
+            } else {
+                removeButton = null;
+            }
+
+            return React.createElement(
+                'div',
+                { style: { border: '1px solid black' } },
+                React.createElement('input', { type: 'text', value: q.question }),
+                React.createElement('br', null),
+                removeButton,
+                React.createElement('br', null)
             );
         }
     }]);
@@ -99,8 +104,15 @@ var QuizMaker = function (_React$Component2) {
         value: function render() {
             var _this4 = this;
 
-            questionMakers = this.state.newQuiz.questions.map(function (q, i) {
-                return React.createElement(QuestionMaker, { key: i, number: i, question: q, removeQuestion: _this4.removeQuestion });
+            questions = this.state.newQuiz.questions;
+            questionMakers = questions.map(function (q, i) {
+                return React.createElement(QuestionMaker, {
+                    key: i,
+                    number: i,
+                    question: q,
+                    removeQuestion: _this4.removeQuestion,
+                    removable: questions.length > 1 ? true : false
+                });
             });
 
             return React.createElement(

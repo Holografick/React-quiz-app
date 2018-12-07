@@ -5,12 +5,23 @@ class QuestionMaker extends React.Component{
 	
 	render(){
 		q = this.props.question;
-		return (
-			<div>
-				<div key={q.question} style={{border: '1px solid black'}}>{q.question}</div>
-				<button onClick={() =>this.props.removeQuestion(this.props.number)}>
+		
+		if(this.props.removable){
+			removeButton =
+				(<button onClick={() =>this.props.removeQuestion(this.props.number)}>
 					Remove Question
-				</button>
+				</button>)
+		} else {
+			removeButton = null;
+		}
+		
+		return (
+			<div style={{border: '1px solid black'}}>
+				<input type='text' value={q.question}></input>
+				<br></br>
+				{removeButton}
+				
+				<br></br>
 			</div>
 		)
 	}
@@ -68,9 +79,16 @@ class QuizMaker extends React.Component{
 	}
     
     render(){
+		questions = this.state.newQuiz.questions;
         questionMakers = 
-            this.state.newQuiz.questions.map( (q,i) =>(
-                <QuestionMaker key={i} number={i} question={q} removeQuestion={this.removeQuestion}/>
+            questions.map( (q,i) =>(
+                <QuestionMaker
+					key={i}
+					number={i}
+					question={q}
+					removeQuestion={this.removeQuestion}
+					removable={questions.length > 1? true : false}
+				/>
             ))
         
         return (
