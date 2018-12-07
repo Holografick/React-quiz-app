@@ -32,7 +32,7 @@ var App = function (_React$Component) {
         };
 
         _this.addQuiz = function (newQuiz) {
-            quizList = _this.state.quizList;
+            quizList = JSON.parse(JSON.stringify(_this.state.quizList));
             quizList.push(newQuiz);
             _this.setState({
                 quizList: quizList

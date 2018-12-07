@@ -18,10 +18,24 @@ var QuestionMaker = function (_React$Component) {
     _createClass(QuestionMaker, [{
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
+            q = this.props.question;
             return React.createElement(
                 'div',
-                { key: question.question, style: { border: '1px solid black' } },
-                this.props.question.question
+                null,
+                React.createElement(
+                    'div',
+                    { key: q.question, style: { border: '1px solid black' } },
+                    q.question
+                ),
+                React.createElement(
+                    'button',
+                    { onClick: function onClick() {
+                            return _this2.props.addQuestion(q);
+                        } },
+                    'Add Question'
+                )
             );
         }
     }]);
@@ -35,22 +49,28 @@ var QuizMaker = function (_React$Component2) {
     function QuizMaker(props) {
         _classCallCheck(this, QuizMaker);
 
-        var _this2 = _possibleConstructorReturn(this, (QuizMaker.__proto__ || Object.getPrototypeOf(QuizMaker)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (QuizMaker.__proto__ || Object.getPrototypeOf(QuizMaker)).call(this, props));
 
-        _this2.addQuiz = function () {
-            _this2.props.addQuiz(_this2.state.newQuiz);
-            _this2.props.backToMenu();
+        _this3.addQuiz = function () {
+            _this3.props.addQuiz(_this3.state.newQuiz);
+            _this3.props.backToMenu();
         };
 
-        _this2.changeQuizInfo = function (changeKey, val) {
-            quiz = JSON.parse(JSON.stringify(_this2.state.newQuiz));
+        _this3.changeQuizInfo = function (changeKey, val) {
+            quiz = JSON.parse(JSON.stringify(_this3.state.newQuiz));
             quiz[changeKey] = val;
-            _this2.setState({
+            _this3.setState({
                 newQuiz: quiz
             });
         };
 
-        _this2.state = {
+        _this3.addQuestion = function (newQuestion) {
+            questionList = JSON.parse(JSON.stringify(_this3.state.newQuiz.questions));
+            questionList.push(newQuestion);
+            _this3.changeQuizInfo('questions', questionList);
+        };
+
+        _this3.state = {
             newQuiz: {
                 name: 'New Quiz',
                 description: 'Add a description',
@@ -62,16 +82,16 @@ var QuizMaker = function (_React$Component2) {
                 }]
             }
         };
-        return _this2;
+        return _this3;
     }
 
     _createClass(QuizMaker, [{
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             questionMakers = this.state.newQuiz.questions.map(function (q) {
-                return React.createElement(QuestionMaker, { question: q });
+                return React.createElement(QuestionMaker, { question: q, addQuestion: _this4.addQuestion });
             });
 
             return React.createElement(
@@ -93,7 +113,7 @@ var QuizMaker = function (_React$Component2) {
                     type: 'text',
                     value: this.state.newQuiz.name,
                     onChange: function onChange(e) {
-                        return _this3.changeQuizInfo('name', e.target.value);
+                        return _this4.changeQuizInfo('name', e.target.value);
                     }
                 }),
                 React.createElement('br', null),
@@ -107,7 +127,7 @@ var QuizMaker = function (_React$Component2) {
                     type: 'text',
                     value: this.state.newQuiz.description,
                     onChange: function onChange(e) {
-                        return _this3.changeQuizInfo('description', e.target.value);
+                        return _this4.changeQuizInfo('description', e.target.value);
                     }
                 }),
                 React.createElement('br', null),

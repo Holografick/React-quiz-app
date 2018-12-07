@@ -26,7 +26,7 @@ class App extends React.Component{
     }
     
     addQuiz = (newQuiz) =>{
-        quizList = this.state.quizList;
+        quizList = JSON.parse(JSON.stringify(this.state.quizList));
         quizList.push(newQuiz);
         this.setState({
             quizList: quizList

@@ -4,8 +4,12 @@ class QuestionMaker extends React.Component{
 	}
 	
 	render(){
+		q = this.props.question;
 		return (
-			<div key={question.question} style={{border: '1px solid black'}}>{this.props.question.question}</div>
+			<div>
+				<div key={q.question} style={{border: '1px solid black'}}>{q.question}</div>
+				<button onClick={() =>this.props.addQuestion(q)}>Add Question</button>
+			</div>
 		)
 	}
 }
@@ -46,11 +50,17 @@ class QuizMaker extends React.Component{
             newQuiz: quiz
         })
     }
+	
+    addQuestion = (newQuestion) =>{
+        questionList = JSON.parse(JSON.stringify(this.state.newQuiz.questions));
+        questionList.push(newQuestion);
+        this.changeQuizInfo('questions', questionList);
+    }
     
     render(){
         questionMakers = 
             this.state.newQuiz.questions.map( q =>(
-                <QuestionMaker question={q}/>
+                <QuestionMaker question={q} addQuestion={this.addQuestion}/>
             ))
         
         return (
