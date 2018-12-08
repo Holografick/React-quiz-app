@@ -35,21 +35,24 @@ class QuizMaker extends React.Component{
             newQuiz: {
                 name: 'New Quiz',
                 description: 'Add a description',
-                questions: [
-                    {
-                        question: 'Some Question',
-                        options: [
-                            'bleh',
-                            'brlblr',
-                            'hoccana'
-                        ],
-                        answer: 0,
-                        explanation: 'wassup'
-                    }
-                ]
+                questions: []
             }
         }
+		this.state.newQuiz.questions.push(this.getDefaultQuestion())
     }
+	
+	getDefaultQuestion = () =>{
+		return {
+			question : 'Question ' + (this.state.newQuiz.questions.length+1),
+			options: [
+					'Option 1',
+					'Option 2',
+					'Option 3'
+				],
+				answer: 0,
+				explanation: '...'	
+			}
+	}
 	
     addQuiz = () =>{
         this.props.addQuiz(this.state.newQuiz);
@@ -65,9 +68,11 @@ class QuizMaker extends React.Component{
     }
 	
     addQuestion = 
-		(newQuestion = this.state.newQuiz.questions[this.state.newQuiz.questions.length-1]) =>{
+		(newQuestion) =>{
 			questionList = JSON.parse(JSON.stringify(this.state.newQuiz.questions));
-			newQuestion.question = this.state.newQuiz.questions.length-1
+			if(!newQuestion){
+				newQuestion = this.getDefaultQuestion()
+			}
 			questionList.push(newQuestion);
 			this.changeQuizInfo('questions', questionList);
 		}

@@ -7,173 +7,178 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var QuestionMaker = function (_React$Component) {
-    _inherits(QuestionMaker, _React$Component);
+				_inherits(QuestionMaker, _React$Component);
 
-    function QuestionMaker(props) {
-        _classCallCheck(this, QuestionMaker);
+				function QuestionMaker(props) {
+								_classCallCheck(this, QuestionMaker);
 
-        return _possibleConstructorReturn(this, (QuestionMaker.__proto__ || Object.getPrototypeOf(QuestionMaker)).call(this, props));
-    }
+								return _possibleConstructorReturn(this, (QuestionMaker.__proto__ || Object.getPrototypeOf(QuestionMaker)).call(this, props));
+				}
 
-    _createClass(QuestionMaker, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
+				_createClass(QuestionMaker, [{
+								key: 'render',
+								value: function render() {
+												var _this2 = this;
 
-            q = this.props.question;
+												q = this.props.question;
 
-            if (this.props.removable) {
-                removeButton = React.createElement(
-                    'button',
-                    { onClick: function onClick() {
-                            return _this2.props.removeQuestion(_this2.props.number);
-                        } },
-                    'Remove Question'
-                );
-            } else {
-                removeButton = null;
-            }
+												if (this.props.removable) {
+																removeButton = React.createElement(
+																				'button',
+																				{ onClick: function onClick() {
+																												return _this2.props.removeQuestion(_this2.props.number);
+																								} },
+																				'Remove Question'
+																);
+												} else {
+																removeButton = null;
+												}
 
-            return React.createElement(
-                'div',
-                { style: { border: '1px solid black' } },
-                React.createElement('input', { type: 'text', value: q.question }),
-                React.createElement('br', null),
-                removeButton,
-                React.createElement('br', null)
-            );
-        }
-    }]);
+												return React.createElement(
+																'div',
+																{ style: { border: '1px solid black' } },
+																React.createElement('input', { type: 'text', value: q.question }),
+																React.createElement('br', null),
+																removeButton,
+																React.createElement('br', null)
+												);
+								}
+				}]);
 
-    return QuestionMaker;
+				return QuestionMaker;
 }(React.Component);
 
 var QuizMaker = function (_React$Component2) {
-    _inherits(QuizMaker, _React$Component2);
+				_inherits(QuizMaker, _React$Component2);
 
-    function QuizMaker(props) {
-        _classCallCheck(this, QuizMaker);
+				function QuizMaker(props) {
+								_classCallCheck(this, QuizMaker);
 
-        var _this3 = _possibleConstructorReturn(this, (QuizMaker.__proto__ || Object.getPrototypeOf(QuizMaker)).call(this, props));
+								var _this3 = _possibleConstructorReturn(this, (QuizMaker.__proto__ || Object.getPrototypeOf(QuizMaker)).call(this, props));
 
-        _this3.addQuiz = function () {
-            _this3.props.addQuiz(_this3.state.newQuiz);
-            _this3.props.backToMenu();
-        };
+								_this3.getDefaultQuestion = function () {
+												return {
+																question: 'Question ' + (_this3.state.newQuiz.questions.length + 1),
+																options: ['Option 1', 'Option 2', 'Option 3'],
+																answer: 0,
+																explanation: '...'
+												};
+								};
 
-        _this3.changeQuizInfo = function (changeKey, val) {
-            quiz = JSON.parse(JSON.stringify(_this3.state.newQuiz));
-            quiz[changeKey] = val;
-            _this3.setState({
-                newQuiz: quiz
-            });
-        };
+								_this3.addQuiz = function () {
+												_this3.props.addQuiz(_this3.state.newQuiz);
+												_this3.props.backToMenu();
+								};
 
-        _this3.addQuestion = function () {
-            var newQuestion = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this3.state.newQuiz.questions[_this3.state.newQuiz.questions.length - 1];
+								_this3.changeQuizInfo = function (changeKey, val) {
+												quiz = JSON.parse(JSON.stringify(_this3.state.newQuiz));
+												quiz[changeKey] = val;
+												_this3.setState({
+																newQuiz: quiz
+												});
+								};
 
-            questionList = JSON.parse(JSON.stringify(_this3.state.newQuiz.questions));
-            newQuestion.question = _this3.state.newQuiz.questions.length - 1;
-            questionList.push(newQuestion);
-            _this3.changeQuizInfo('questions', questionList);
-        };
+								_this3.addQuestion = function (newQuestion) {
+												questionList = JSON.parse(JSON.stringify(_this3.state.newQuiz.questions));
+												if (!newQuestion) {
+																newQuestion = _this3.getDefaultQuestion();
+												}
+												questionList.push(newQuestion);
+												_this3.changeQuizInfo('questions', questionList);
+								};
 
-        _this3.removeQuestion = function (qNumber) {
-            questionList = JSON.parse(JSON.stringify(_this3.state.newQuiz.questions));
-            questionList.splice(qNumber, 1);
-            _this3.changeQuizInfo('questions', questionList);
-        };
+								_this3.removeQuestion = function (qNumber) {
+												questionList = JSON.parse(JSON.stringify(_this3.state.newQuiz.questions));
+												questionList.splice(qNumber, 1);
+												_this3.changeQuizInfo('questions', questionList);
+								};
 
-        _this3.state = {
-            newQuiz: {
-                name: 'New Quiz',
-                description: 'Add a description',
-                questions: [{
-                    question: 'Some Question',
-                    options: ['bleh', 'brlblr', 'hoccana'],
-                    answer: 0,
-                    explanation: 'wassup'
-                }]
-            }
-        };
-        return _this3;
-    }
+								_this3.state = {
+												newQuiz: {
+																name: 'New Quiz',
+																description: 'Add a description',
+																questions: []
+												}
+								};
+								_this3.state.newQuiz.questions.push(_this3.getDefaultQuestion());
+								return _this3;
+				}
 
-    _createClass(QuizMaker, [{
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
+				_createClass(QuizMaker, [{
+								key: 'render',
+								value: function render() {
+												var _this4 = this;
 
-            questions = this.state.newQuiz.questions;
-            questionsRemovable = questions.length > 1 ? true : false;
+												questions = this.state.newQuiz.questions;
+												questionsRemovable = questions.length > 1 ? true : false;
 
-            questionMakers = questions.map(function (q, i) {
-                return React.createElement(QuestionMaker, {
-                    key: i,
-                    number: i,
-                    question: q,
-                    removeQuestion: _this4.removeQuestion,
-                    removable: questionsRemovable
-                });
-            });
+												questionMakers = questions.map(function (q, i) {
+																return React.createElement(QuestionMaker, {
+																				key: i,
+																				number: i,
+																				question: q,
+																				removeQuestion: _this4.removeQuestion,
+																				removable: questionsRemovable
+																});
+												});
 
-            return React.createElement(
-                'div',
-                null,
-                this.props.backButton,
-                React.createElement(
-                    'h1',
-                    null,
-                    'Create a new Quiz'
-                ),
-                React.createElement(
-                    'label',
-                    { htmlFor: 'quiz-name' },
-                    'Quiz Name: '
-                ),
-                React.createElement('input', {
-                    id: 'quiz-name',
-                    type: 'text',
-                    value: this.state.newQuiz.name,
-                    onChange: function onChange(e) {
-                        return _this4.changeQuizInfo('name', e.target.value);
-                    }
-                }),
-                React.createElement('br', null),
-                React.createElement(
-                    'label',
-                    { htmlFor: 'quiz-description' },
-                    'Description: '
-                ),
-                React.createElement('input', {
-                    id: 'quiz-description',
-                    type: 'text',
-                    value: this.state.newQuiz.description,
-                    onChange: function onChange(e) {
-                        return _this4.changeQuizInfo('description', e.target.value);
-                    }
-                }),
-                React.createElement('br', null),
-                React.createElement('br', null),
-                'Questions:',
-                questionMakers,
-                React.createElement('br', null),
-                React.createElement(
-                    'button',
-                    { onClick: function onClick() {
-                            return _this4.addQuestion();
-                        } },
-                    'Add another question'
-                ),
-                React.createElement('br', null),
-                React.createElement(
-                    'button',
-                    { onClick: this.addQuiz },
-                    '+ Add Quiz'
-                )
-            );
-        }
-    }]);
+												return React.createElement(
+																'div',
+																null,
+																this.props.backButton,
+																React.createElement(
+																				'h1',
+																				null,
+																				'Create a new Quiz'
+																),
+																React.createElement(
+																				'label',
+																				{ htmlFor: 'quiz-name' },
+																				'Quiz Name: '
+																),
+																React.createElement('input', {
+																				id: 'quiz-name',
+																				type: 'text',
+																				value: this.state.newQuiz.name,
+																				onChange: function onChange(e) {
+																								return _this4.changeQuizInfo('name', e.target.value);
+																				}
+																}),
+																React.createElement('br', null),
+																React.createElement(
+																				'label',
+																				{ htmlFor: 'quiz-description' },
+																				'Description: '
+																),
+																React.createElement('input', {
+																				id: 'quiz-description',
+																				type: 'text',
+																				value: this.state.newQuiz.description,
+																				onChange: function onChange(e) {
+																								return _this4.changeQuizInfo('description', e.target.value);
+																				}
+																}),
+																React.createElement('br', null),
+																React.createElement('br', null),
+																'Questions:',
+																questionMakers,
+																React.createElement('br', null),
+																React.createElement(
+																				'button',
+																				{ onClick: function onClick() {
+																												return _this4.addQuestion();
+																								} },
+																				'Add another question'
+																),
+																React.createElement('br', null),
+																React.createElement(
+																				'button',
+																				{ onClick: this.addQuiz },
+																				'+ Add Quiz'
+																)
+												);
+								}
+				}]);
 
-    return QuizMaker;
+				return QuizMaker;
 }(React.Component);
