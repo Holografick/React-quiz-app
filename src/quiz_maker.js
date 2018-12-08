@@ -17,7 +17,11 @@ class QuestionMaker extends React.Component{
 		
 		return (
 			<div style={{border: '1px solid black'}}>
-				<input type='text' value={q.question}></input>
+				<input 
+					type='text' 
+					value={q.question} 
+					onChange={(e) =>this.props.changeQuestionInfo(this.props.number, 'question', e.target.value)}
+				/>
 				<br></br>
 				{removeButton}
 				
@@ -67,6 +71,12 @@ class QuizMaker extends React.Component{
         })
     }
 	
+	changeQuestionInfo = (qNumber, changeKey, val) =>{
+		questionList = JSON.parse(JSON.stringify(this.state.newQuiz.questions));
+		questionList[qNumber][changeKey] = val;
+		this.changeQuizInfo('questions', questionList);
+	}
+	
     addQuestion = 
 		(newQuestion) =>{
 			questionList = JSON.parse(JSON.stringify(this.state.newQuiz.questions));
@@ -94,6 +104,7 @@ class QuizMaker extends React.Component{
 					number={i}
 					question={q}
 					removeQuestion={this.removeQuestion}
+					changeQuestionInfo={this.changeQuestionInfo}
 					removable={questionsRemovable}
 				/>
             ))
