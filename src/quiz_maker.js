@@ -18,7 +18,7 @@ class QuestionMaker extends React.Component{
 			removeButton = null;
 		}
 		
-		renderOptions = () =>{
+		renderEditOptions = () =>{
 			return q.options.map( (o, i) =>{
 				return (
 				<div key={i}>
@@ -33,6 +33,12 @@ class QuestionMaker extends React.Component{
 			})
 		}
 		
+		renderCorrectOptions = () =>{
+			return q.options.map( (o, i) =>(
+				<option key={i} value={i}>{o}</option>
+			))
+		}
+		
 		return (
 			<div style={{border: '1px solid black'}}>
 				<label>Question: </label>
@@ -44,11 +50,27 @@ class QuestionMaker extends React.Component{
 				<br></br>
 				
 				<label>Options:</label>
-				{renderOptions()}
-				
+				{renderEditOptions()}
 				<br></br>
-				{removeButton}
 				
+				<label>Correct Answer: </label>
+				<select
+					value={q.answer} 
+					onChange={(e) =>this.props.changeQuestionInfo(this.props.number, 'answer', e.target.value)}
+				>
+					{renderCorrectOptions()}
+				</select>
+				<br></br>
+				
+				<label>Witty explanation of answer: </label>
+				<input
+					type='text' 
+					value={q.explanation} 
+					onChange={(e) =>this.props.changeQuestionInfo(this.props.number, 'explanation', e.target.value)}
+				/>
+				<br></br>
+				
+				{removeButton}
 				<br></br>
 			</div>
 		)

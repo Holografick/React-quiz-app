@@ -39,7 +39,7 @@ var QuestionMaker = function (_React$Component) {
 				removeButton = null;
 			}
 
-			renderOptions = function renderOptions() {
+			renderEditOptions = function renderEditOptions() {
 				return q.options.map(function (o, i) {
 					return React.createElement(
 						'div',
@@ -52,6 +52,16 @@ var QuestionMaker = function (_React$Component) {
 							}
 						}),
 						React.createElement('br', null)
+					);
+				});
+			};
+
+			renderCorrectOptions = function renderCorrectOptions() {
+				return q.options.map(function (o, i) {
+					return React.createElement(
+						'option',
+						{ key: i, value: i },
+						o
 					);
 				});
 			};
@@ -77,7 +87,36 @@ var QuestionMaker = function (_React$Component) {
 					null,
 					'Options:'
 				),
-				renderOptions(),
+				renderEditOptions(),
+				React.createElement('br', null),
+				React.createElement(
+					'label',
+					null,
+					'Correct Answer: '
+				),
+				React.createElement(
+					'select',
+					{
+						value: q.answer,
+						onChange: function onChange(e) {
+							return _this2.props.changeQuestionInfo(_this2.props.number, 'answer', e.target.value);
+						}
+					},
+					renderCorrectOptions()
+				),
+				React.createElement('br', null),
+				React.createElement(
+					'label',
+					null,
+					'Witty explanation of answer: '
+				),
+				React.createElement('input', {
+					type: 'text',
+					value: q.explanation,
+					onChange: function onChange(e) {
+						return _this2.props.changeQuestionInfo(_this2.props.number, 'explanation', e.target.value);
+					}
+				}),
 				React.createElement('br', null),
 				removeButton,
 				React.createElement('br', null)
