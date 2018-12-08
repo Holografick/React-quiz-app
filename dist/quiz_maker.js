@@ -12,7 +12,12 @@ var QuestionMaker = function (_React$Component) {
 	function QuestionMaker(props) {
 		_classCallCheck(this, QuestionMaker);
 
-		return _possibleConstructorReturn(this, (QuestionMaker.__proto__ || Object.getPrototypeOf(QuestionMaker)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (QuestionMaker.__proto__ || Object.getPrototypeOf(QuestionMaker)).call(this, props));
+
+		_this.state = {
+			options: _this.props.question.options
+		};
+		return _this;
 	}
 
 	_createClass(QuestionMaker, [{
@@ -34,9 +39,31 @@ var QuestionMaker = function (_React$Component) {
 				removeButton = null;
 			}
 
+			renderOptions = function renderOptions() {
+				return q.options.map(function (o, i) {
+					return React.createElement(
+						'div',
+						{ key: i },
+						React.createElement('input', {
+							type: 'text',
+							value: o,
+							onChange: function onChange(e) {
+								return _this2.props.changeOptions(_this2.props.number, i, e.target.value);
+							}
+						}),
+						React.createElement('br', null)
+					);
+				});
+			};
+
 			return React.createElement(
 				'div',
 				{ style: { border: '1px solid black' } },
+				React.createElement(
+					'label',
+					null,
+					'Question: '
+				),
 				React.createElement('input', {
 					type: 'text',
 					value: q.question,
@@ -44,6 +71,13 @@ var QuestionMaker = function (_React$Component) {
 						return _this2.props.changeQuestionInfo(_this2.props.number, 'question', e.target.value);
 					}
 				}),
+				React.createElement('br', null),
+				React.createElement(
+					'label',
+					null,
+					'Options:'
+				),
+				renderOptions(),
 				React.createElement('br', null),
 				removeButton,
 				React.createElement('br', null)
@@ -90,6 +124,12 @@ var QuizMaker = function (_React$Component2) {
 			_this3.changeQuizInfo('questions', questionList);
 		};
 
+		_this3.changeOptions = function (qNumber, oNumber, val) {
+			questionList = JSON.parse(JSON.stringify(_this3.state.newQuiz.questions));
+			questionList[qNumber].options[oNumber] = val;
+			_this3.changeQuestionInfo(qNumber, 'options', questionList[qNumber].options);
+		};
+
 		_this3.addQuestion = function (newQuestion) {
 			questionList = JSON.parse(JSON.stringify(_this3.state.newQuiz.questions));
 			if (!newQuestion) {
@@ -131,6 +171,7 @@ var QuizMaker = function (_React$Component2) {
 					question: q,
 					removeQuestion: _this4.removeQuestion,
 					changeQuestionInfo: _this4.changeQuestionInfo,
+					changeOptions: _this4.changeOptions,
 					removable: questionsRemovable
 				});
 			});

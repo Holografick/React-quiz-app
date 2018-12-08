@@ -1,6 +1,9 @@
 class QuestionMaker extends React.Component{
     constructor(props){
         super(props);
+		this.state = {
+			options: this.props.question.options
+		};
 	}
 	
 	render(){
@@ -15,13 +18,34 @@ class QuestionMaker extends React.Component{
 			removeButton = null;
 		}
 		
+		renderOptions = () =>{
+			return q.options.map( (o, i) =>{
+				return (
+				<div key={i}>
+					<input
+						type='text' 
+						value={o}
+						onChange={(e) =>this.props.changeOptions(this.props.number, i , e.target.value)}
+					/>
+					<br></br>
+				</div>
+				)
+			})
+		}
+		
 		return (
 			<div style={{border: '1px solid black'}}>
+				<label>Question: </label>
 				<input 
 					type='text' 
 					value={q.question} 
 					onChange={(e) =>this.props.changeQuestionInfo(this.props.number, 'question', e.target.value)}
 				/>
+				<br></br>
+				
+				<label>Options:</label>
+				{renderOptions()}
+				
 				<br></br>
 				{removeButton}
 				
@@ -53,8 +77,8 @@ class QuizMaker extends React.Component{
 					'Option 2',
 					'Option 3'
 				],
-				answer: 0,
-				explanation: '...'	
+			answer: 0,
+			explanation: '...'	
 			}
 	}
 	
@@ -75,6 +99,12 @@ class QuizMaker extends React.Component{
 		questionList = JSON.parse(JSON.stringify(this.state.newQuiz.questions));
 		questionList[qNumber][changeKey] = val;
 		this.changeQuizInfo('questions', questionList);
+	}
+	
+	changeOptions = (qNumber, oNumber, val) =>{
+		questionList = JSON.parse(JSON.stringify(this.state.newQuiz.questions));
+		questionList[qNumber].options[oNumber] = val
+		this.changeQuestionInfo(qNumber, 'options', questionList[qNumber].options)
 	}
 	
     addQuestion = 
@@ -105,6 +135,7 @@ class QuizMaker extends React.Component{
 					question={q}
 					removeQuestion={this.removeQuestion}
 					changeQuestionInfo={this.changeQuestionInfo}
+					changeOptions = {this.changeOptions}
 					removable={questionsRemovable}
 				/>
             ))
